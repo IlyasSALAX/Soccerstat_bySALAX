@@ -1,0 +1,166 @@
+<template>
+  <div>
+    <v-progress-circular
+      v-if="isLoading"
+      class="d-block mx-auto my-8"
+      color="primary"
+      indeterminate
+    />
+
+    <v-row align="start" class="pa-1" justify="center">
+      <v-col md="2">
+        <v-dialog v-model="dialog" width="auto">
+          <template #activator="{ props }">
+            <v-text-field
+              v-model="formattedDate"
+              v-bind="props"
+              label="Выберите дату"
+              prepend-icon="mdi-calendar"
+              readonly
+            />
+          </template>
+          <v-date-picker
+            v-model="dateFrom"
+            no-title
+            scrollable
+            @update:model-value="onDateSelected"
+          />
+        </v-dialog>
+
+        <div class="text-center">
+          <v-btn
+            color="red darken-1"
+            height="25"
+            rounded="lg"
+            style="font-size: 10px;"
+            @click="clearFilter"
+          >
+            Очистить фильтр
+          </v-btn>
+        </div>
+      </v-col>
+    </v-row>
+
+    <v-data-table
+      class="mt-4"
+      :headers="headers"
+      :items="filteredMatches"
+      :items-per-page="10"
+    >
+      <template #item.utcDate="{ item }">
+        {{ new Date(item.utcDate).toLocaleString() }}
+      </template>
+
+      <template #item.status="{ item }">
+        <v-chip :color="getStatusColor(item.status)" small>
+          {{ getStatusText(item.status) }}
+        </v-chip>
+      </template>
+
+      <template #item.teams="{ item }">
+        <b>{{ item.homeTeam?.name }}</b> - {{ item.awayTeam?.name }}
+      </template>
+
+      <template #item.score="{ item }">
+        <span v-if="item.score?.fullTime?.home != null && item.score?.fullTime?.away != null">
+          {{ item.score.fullTime.home }} : {{ item.score.fullTime.away }}
+        </span>
+        <span v-else>
+          – : –
+        </span>
+      </template>
+    </v-data-table>
+  </div>
+</template>
+
+<script>
+  import api from '@/api'
+
+  export default {
+    data () {
+      return {
+        dialog: false,
+        dateFrom: null,
+        matches: [],
+        isLoading: false,
+        headers: [
+          { title: 'Дата и время', key: 'utcDate', width: '180px' },
+          { title: 'Статус', key: 'status', width: '120px' },
+          { title: 'Команды', key: 'teams', width: '300px' },
+          { title: 'Счёт', key: 'score', width: '80px' },
+        ],
+      }
+    },
+    computed: {
+      filteredMatches () {
+        if (!this.dateFrom) return this.matches
+        const selected = new Date(this.dateFrom)
+        return this.matches.filter(match => new Date(match.utcDate) >= selected)
+      },
+      formattedDate () {
+        return this.dateFrom ? new Date(this.dateFrom).toLocaleDateString() : ''
+      },
+    },
+    mounted () {
+      this.loadMatches()
+    },
+    methods: {
+      clearFilter () {
+        this.dateFrom = null
+      },
+      onDateSelected () {
+        this.dialog = false
+      },
+      getStatusText (status) {
+        const map = {
+          FINISHED: 'Матч завершён',
+          SCHEDULED: 'Запланирован',
+          TIMED: 'Назначено время',
+          LIVE: 'В эфире',
+          IN_PLAY: 'В игре',
+          PAUSED: 'Пауза',
+          SUSPENDED: 'Приостановлен',
+          CANCELED: 'Отменён',
+          POSTPONED: 'Отложен',
+        }
+        return map[status] || status
+      },
+      getStatusColor (status) {
+        const map = {
+          FINISHED: 'green',
+          SCHEDULED: 'blue',
+          TIMED: 'light-blue',
+          LIVE: 'red',
+          IN_PLAY: 'orange',
+          PAUSED: 'yellow',
+          SUSPENDED: 'deep-orange',
+          CANCELED: 'grey',
+          POSTPONED: 'indigo',
+        }
+        return map[status] || 'grey'
+      },
+      loadMatches () {
+        this.isLoading = true
+        const teamId = this.$route.params.id
+        api
+          .get(`/api/v4/teams/${teamId}/matches`)
+          .then(res => (this.matches = res.data.matches))
+          .catch(console.error)
+          .finally(() => (this.isLoading = false))
+      },
+    },
+  }
+</script>
+
+<style scoped>
+.v-data-table {
+  margin-top: 16px;
+  table-layout: fixed;
+}
+
+.v-data-table-header th {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
