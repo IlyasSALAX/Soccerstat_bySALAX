@@ -1,5 +1,7 @@
 <template>
   <div>
+    <Breadcrumbs v-if="leagueName" :items="breadcrumbs" />
+
     <v-progress-circular
       v-if="isLoading"
       class="d-block mx-auto my-8"
@@ -62,7 +64,9 @@
       </template>
 
       <template #item.score="{ item }">
-        <span v-if="item.score?.fullTime?.home != null && item.score?.fullTime?.away != null">
+        <span
+          v-if="item.score?.fullTime?.home != null && item.score?.fullTime?.away != null"
+        >
           {{ item.score.fullTime.home }} : {{ item.score.fullTime.away }}
         </span>
         <span v-else>
@@ -75,14 +79,18 @@
 
 <script>
   import api from '@/api'
-
+  import Breadcrumbs from './Breadcrumbs.vue'
   export default {
+    components:{
+      Breadcrumbs,
+    },
     data () {
       return {
         dialog: false,
         dateFrom: null,
         matches: [],
         isLoading: false,
+        leagueName: '', // Название лиги
         headers: [
           { title: 'Дата и время', key: 'utcDate', width: '180px' },
           { title: 'Статус', key: 'status', width: '120px' },
@@ -92,6 +100,13 @@
       }
     },
     computed: {
+      breadcrumbs () {
+        return [
+          { title: 'Главная', to: '/home' },
+          { title: 'Лиги', to: '/leagues' },
+          { title: this.leagueName || 'Загрузка...', to: null },
+        ]
+      },
       filteredMatches () {
         if (!this.dateFrom) return this.matches
         const selected = new Date(this.dateFrom)
@@ -142,11 +157,19 @@
       loadMatches () {
         this.isLoading = true
         const leagueId = this.$route.query.id
-        api
-          .get(`api/v4/competitions/${leagueId}/matches`)
-          .then(res => (this.matches = res.data.matches))
+
+        Promise.all([
+          api.get(`/api/v4/competitions/${leagueId}`), // получить инфу о лиге
+          api.get(`/api/v4/competitions/${leagueId}/matches`), // получить матчи
+        ])
+          .then(([leagueRes, matchesRes]) => {
+            this.leagueName = leagueRes.data.name // сохранить название
+            this.matches = matchesRes.data.matches
+          })
           .catch(console.error)
-          .finally(() => (this.isLoading = false))
+          .finally(() => {
+            this.isLoading = false
+          })
       },
     },
   }
@@ -157,10 +180,10 @@
   margin-top: 16px;
   table-layout: fixed;
 }
-
 .v-data-table-header th {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 </style>

@@ -14,24 +14,6 @@
     <!-- Популярные лиги -->
     <section class="popular-leagues">
       <h2 class="section-title">Популярные лиги</h2>
-      <div class="leagues-grid">
-        <v-card
-          v-for="league in featuredLeagues"
-          :key="league.id"
-          class="league-card"
-          @click="$router.push(`/league/?id=${league.id}`)"
-        >
-          <v-img
-            class="league-emblem"
-            contain
-            height="120"
-            :src="league.emblem"
-          />
-          <v-card-title class="text-center">
-            {{ league.name }}
-          </v-card-title>
-        </v-card>
-      </div>
     </section>
 
     <!-- Последние матчи -->

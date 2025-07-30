@@ -105,7 +105,7 @@
         this.page = 1
       },
       goToTeam (teamId) {
-        this.$router.push(`/teams/${teamId}/calendar`)
+        this.$router.push(`/teams/${teamId}/matches`)
       },
     },
   }

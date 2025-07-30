@@ -1,5 +1,7 @@
 <template>
   <div>
+    <Breadcrumbs v-if="teamName" :items="breadcrumbs" />
+
     <v-progress-circular
       v-if="isLoading"
       class="d-block mx-auto my-8"
@@ -75,8 +77,11 @@
 
 <script>
   import api from '@/api'
-
+  import Breadcrumbs from '@/components/Breadcrumbs.vue'
   export default {
+    components: {
+      Breadcrumbs,
+    },
     data () {
       return {
         dialog: false,
@@ -92,6 +97,14 @@
       }
     },
     computed: {
+      breadcrumbs () {
+        return [
+          { title: 'Главная', to: '/home' },
+          { title: 'Команды', to: '/teams/all' },
+          { title: this.teamName || 'Загрузка...', to: null },
+        ]
+      },
+
       filteredMatches () {
         if (!this.dateFrom) return this.matches
         const selected = new Date(this.dateFrom)
@@ -142,11 +155,19 @@
       loadMatches () {
         this.isLoading = true
         const teamId = this.$route.params.id
-        api
-          .get(`/api/v4/teams/${teamId}/matches`)
-          .then(res => (this.matches = res.data.matches))
+
+        Promise.all([
+          api.get(`/api/v4/teams/${teamId}`), // ← команда
+          api.get(`/api/v4/teams/${teamId}/matches`), // ← матчи
+        ])
+          .then(([teamRes, matchesRes]) => {
+            this.teamName = teamRes.data.name // ← сохраняем имя
+            this.matches = matchesRes.data.matches
+          })
           .catch(console.error)
-          .finally(() => (this.isLoading = false))
+          .finally(() => {
+            this.isLoading = false
+          })
       },
     },
   }

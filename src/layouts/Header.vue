@@ -2,15 +2,15 @@
   <header class="header">
     <div class="header-container">
       <div class="logo">
-        <router-link to="/">SportsStats</router-link>
+        <router-link to="/home">SportsStats</router-link>
       </div>
 
       <nav class="nav-menu">
 
         <router-link to="/home">Главная</router-link>
         <router-link to="/leagues">Лиги</router-link>
-        <router-link to="/teams">Команды</router-link>
-        <router-link to="/teams/1/calendar">Коk</router-link>
+        <router-link to="/teams/all">Команды</router-link>
+        <router-link to="/teams/1/matches">Коk</router-link>
 
       </nav>
     </div>

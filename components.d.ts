@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Breadcrumbs: typeof import('./src/components/Breadcrumbs.vue')['default']
     calendar: typeof import('./src/pages/teams/[id]/matches.vue')['default']
     Card: typeof import('./src/components/Card.vue')['default']
     DHome: typeof import('./src/components/DHome.vue')['default']

@@ -8,8 +8,8 @@
 
       <div class="footer-section">
         <h4>Навигация</h4>
-        <router-link to="/">Главная</router-link>
-        <router-link to="/League">Матчи</router-link>
+        <router-link to="/home">Главная</router-link>
+        <router-link to="/leagues">Матчи</router-link>
       </div>
 
       <div class="footer-section">
