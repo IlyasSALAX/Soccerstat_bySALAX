@@ -2,7 +2,13 @@
   <header class="header">
     <div class="header-container">
       <div class="logo">
-        <router-link to="/home">SportsStats</router-link>
+        <router-link to="/home">
+          <img
+            class="logo-img"
+            src="@/assets/logo.svg"
+          >
+          FootballStat
+        </router-link>
       </div>
 
       <nav class="nav-menu">
@@ -10,7 +16,6 @@
         <router-link to="/home">Главная</router-link>
         <router-link to="/leagues">Лиги</router-link>
         <router-link to="/teams/all">Команды</router-link>
-        <router-link to="/teams/1/matches">Коk</router-link>
 
       </nav>
     </div>
@@ -41,13 +46,17 @@
   margin: 0 auto;
   padding: 0.8rem 1.5rem;
 }
-
+.logo-img {
+  height: 70px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
 .logo a {
-  color: #f44336;
-  font-size: 1.5rem;
+  color:  #f44336;
+  font-size: 2rem;
   font-weight: bold;
   text-decoration: none;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Raleway', sans-serif;
   white-space: nowrap;
 }
 
@@ -70,11 +79,11 @@
 }
 
 .nav-menu a:hover {
-  color: #f44336;
+  color:  #f44336;
 }
 
 .nav-menu a.router-link-active {
-  color: #f44336;
+  color:  #f44336;
 }
 
 .nav-menu a.router-link-active::after {
@@ -84,7 +93,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: #f44336;
+  background:  #f44336;
 }
 
 @media (max-width: 768px) {

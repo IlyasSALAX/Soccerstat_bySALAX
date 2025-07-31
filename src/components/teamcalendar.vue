@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Хлебные крошки -->
     <Breadcrumbs v-if="teamName" :items="breadcrumbs" />
 
     <v-progress-circular
@@ -29,7 +30,7 @@
           />
         </v-dialog>
 
-        <div class="text-center">
+        <div class="text-center mt-2">
           <v-btn
             color="red darken-1"
             height="25"
@@ -43,6 +44,36 @@
       </v-col>
     </v-row>
 
+    <!-- Информация о команде и игроках -->
+    <v-row class="ma-0">
+      <v-col class="pa-1" cols="auto">
+        <v-btn
+          color="primary"
+          height="25"
+          rounded="lg"
+          style="font-size: 10px;"
+          @click="openInfo('team')"
+        >
+          Информация о команде
+        </v-btn>
+      </v-col>
+      <v-col class="pa-1" cols="auto">
+        <v-btn
+          color="red darken-1"
+          height="25"
+          rounded="lg"
+          style="font-size: 10px;"
+          @click="openInfo('players')"
+        >
+          Игроки
+        </v-btn>
+      </v-col>
+    </v-row>
+
+    <!-- Внешний компонент с диалогами -->
+    <InfoCard ref="infoCard" :team-id="teamId" />
+
+    <!-- Таблица игр команды -->
     <v-data-table
       class="mt-4"
       :headers="headers"
@@ -50,7 +81,7 @@
       :items-per-page="10"
     >
       <template #item.utcDate="{ item }">
-        {{ new Date(item.utcDate).toLocaleString() }}
+        {{ new Date(item.utcDate).toLocaleString('ru-RU') }}
       </template>
 
       <template #item.status="{ item }">
@@ -78,21 +109,23 @@
 <script>
   import api from '@/api'
   import Breadcrumbs from '@/components/Breadcrumbs.vue'
+  import InfoCard from '@/components/InfoCard.vue'
+
   export default {
-    components: {
-      Breadcrumbs,
-    },
+    components: { Breadcrumbs, InfoCard },
     data () {
       return {
         dialog: false,
         dateFrom: null,
         matches: [],
         isLoading: false,
+        teamName: '',
+        teamId: this.$route.params.id,
         headers: [
-          { title: 'Дата и время', key: 'utcDate', width: '180px' },
-          { title: 'Статус', key: 'status', width: '120px' },
-          { title: 'Команды', key: 'teams', width: '300px' },
-          { title: 'Счёт', key: 'score', width: '80px' },
+          { text: 'Дата и время', value: 'utcDate', width: '180px' },
+          { text: 'Статус', value: 'status', width: '120px' },
+          { text: 'Команды', value: 'teams', width: '300px' },
+          { text: 'Счёт', value: 'score', width: '80px' },
         ],
       }
     },
@@ -104,14 +137,13 @@
           { title: this.teamName || 'Загрузка...', to: null },
         ]
       },
-
       filteredMatches () {
         if (!this.dateFrom) return this.matches
         const selected = new Date(this.dateFrom)
         return this.matches.filter(match => new Date(match.utcDate) >= selected)
       },
       formattedDate () {
-        return this.dateFrom ? new Date(this.dateFrom).toLocaleDateString() : ''
+        return this.dateFrom ? new Date(this.dateFrom).toLocaleDateString('ru-RU') : ''
       },
     },
     mounted () {
@@ -157,17 +189,22 @@
         const teamId = this.$route.params.id
 
         Promise.all([
-          api.get(`/api/v4/teams/${teamId}`), // ← команда
-          api.get(`/api/v4/teams/${teamId}/matches`), // ← матчи
+          api.get(`/api/v4/teams/${teamId}`),
+          api.get(`/api/v4/teams/${teamId}/matches`),
         ])
           .then(([teamRes, matchesRes]) => {
-            this.teamName = teamRes.data.name // ← сохраняем имя
+            this.teamName = teamRes.data.name
             this.matches = matchesRes.data.matches
           })
           .catch(console.error)
           .finally(() => {
             this.isLoading = false
           })
+      },
+      openInfo (kind) {
+        if (this.$refs.infoCard && typeof this.$refs.infoCard.open === 'function') {
+          this.$refs.infoCard.open(kind)
+        }
       },
     },
   }

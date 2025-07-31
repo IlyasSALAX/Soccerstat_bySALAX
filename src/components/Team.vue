@@ -28,7 +28,7 @@
     </v-alert>
 
     <template v-else>
-      <v-row justify="center">
+      <v-row class="mx-16" justify="center">
         <v-col
           v-for="(team,index) in paginatedTeams"
           :key="index"
@@ -40,9 +40,8 @@
         >
           <v-card class="team-card" hover @click="goToTeam(team.id)">
             <v-img
-              class="white--text"
-              cover
-              height="150"
+              contain
+              height="200"
               :src="team.crest"
             />
             <v-card-title class="text-h6 text-center">{{ team.name }}</v-card-title>
@@ -119,11 +118,43 @@
 .v-pagination {
   justify-content: center;
 }
+
+
 .team-card {
+
+  max-width: 660px;
+  min-height: 200px;
+  border-radius: 32px;
   cursor: pointer;
-  transition: transform 0.2s;
+  background-color: #e21313e0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin: 0 auto;
 }
+
 .team-card:hover {
-  transform: scale(1.02);
+    transform: translateY(-8px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+}
+
+.team-logo {
+    background-color: #381212;
+}
+
+.team-name {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #222;
+}
+
+.team-region {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #555;
 }
 </style>

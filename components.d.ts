@@ -12,11 +12,14 @@ declare module 'vue' {
     calendar: typeof import('./src/pages/teams/[id]/matches.vue')['default']
     Card: typeof import('./src/components/Card.vue')['default']
     DHome: typeof import('./src/components/DHome.vue')['default']
+    InfoCard: typeof import('./src/components/InfoCard.vue')['default']
     LeaguesTabs: typeof import('./src/components/LeaguesTabs.vue')['default']
     MatchesTabs: typeof import('./src/components/MatchesTabs.vue')['default']
+    Players: typeof import('./src/components/Players.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Team: typeof import('./src/components/Team.vue')['default']
     Teamcalendar: typeof import('./src/components/teamcalendar.vue')['default']
+    TeamPlayers: typeof import('./src/components/TeamPlayers.vue')['default']
   }
 }

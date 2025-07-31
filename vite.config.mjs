@@ -64,10 +64,10 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'https://api.football-data.org', // Ваш API сервер
+        target: 'https://api.football-data.org',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, ''),
-        secure: false, // Если нужен обход SSL
+        secure: false,
       },
 
     },

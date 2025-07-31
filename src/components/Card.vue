@@ -45,7 +45,7 @@
 .league-card {
 
   max-width: 660px;
-  min-height: 300px;
+  min-height: 200px;
   border-radius: 32px;
   cursor: pointer;
   background-color: #e21313e0;

@@ -19,7 +19,7 @@
     </template>
   </v-breadcrumbs>
   <v-divider style="margin-top: -10px;" />
-  <br></br>
+  <br>
 </template>
 
 <script>
@@ -54,7 +54,6 @@
   user-select: none;
 }
 
-/* Дополнительно добавим плавность и чуть больше пространства */
 .v-breadcrumbs {
   font-family: "Roboto", sans-serif;
   letter-spacing: 0.03em;

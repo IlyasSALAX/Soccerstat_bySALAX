@@ -1,124 +1,121 @@
 <template>
   <div class="home-page">
+    <section class="cards-section">
+      <router-link class="card" to="/leagues">
+        <img alt="Кубок" class="card-icon" src="@/assets/League.png">
+        <h2>Лиги</h2>
+        <p>Обзор популярных футбольных лиг</p>
+      </router-link>
+
+      <router-link class="card" to="/teams/all">
+        <img alt="Футбольный мяч" class="card-icon" src="@/assets/Teams.png">
+        <h2>Команды</h2>
+        <p>Информация о футбольных командах</p>
+      </router-link>
+    </section>
     <!-- Герой-секция -->
     <section class="hero-section">
-      <div class="hero-content">
-        <h1>Добро пожаловать в SportsStats</h1>
-        <p>Самые актуальные спортивные статистика и результаты</p>
-        <v-btn color="red darken-1" large to="/matches">
-          Смотреть матчи
-        </v-btn>
-      </div>
+      <h1>Добро пожаловать в SportsStats</h1>
+      <p>Самая актуальная спортивная статистика и результаты</p>
+      <v-btn color="red darken-1" large to="/leagues">
+        Смотреть лиги
+      </v-btn>
     </section>
 
-    <!-- Популярные лиги -->
-    <section class="popular-leagues">
-      <h2 class="section-title">Популярные лиги</h2>
+    <!-- Текст под героем -->
+    <section class="intro-text">
+      <p>
+        SportsStats — это ваш надежный источник свежей информации о футбольных матчах, командах и лигах.
+        Следите за последними результатами, анализируйте статистику и оставайтесь в курсе всех событий!
+      </p>
     </section>
 
-    <!-- Последние матчи -->
-    <section class="recent-matches">
-      <h2 class="section-title">Последние результаты</h2>
-      <v-simple-table>
-        <template #default>
-          <thead>
-            <tr>
-              <th>Дата</th>
-              <th>Команды</th>
-              <th>Счёт</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="match in recentMatches"
-              :key="match.id"
-              class="match-row"
-              @click="$router.push(`/match/${match.id}`)"
-            >
-              <td>{{ formatDate(match.utcDate) }}</td>
-              <td>
-                <strong>{{ match.homeTeam.name }}</strong> vs {{ match.awayTeam.name }}
-              </td>
-              <td>
-                {{ match.score.fullTime.home }} : {{ match.score.fullTime.away }}
-              </td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-    </section>
+
   </div>
 </template>
 
 <script>
-
+  export default {
+    name: 'HomePage',
+  }
 </script>
 
 <style scoped>
 .home-page {
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 20px;
+  text-align: center;
 }
 
 .hero-section {
   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-    url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80');
+    url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1200&q=80');
   background-size: cover;
   background-position: center;
   color: white;
   padding: 100px 20px;
-  text-align: center;
   border-radius: 8px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
-.hero-content h1 {
+.hero-section h1 {
   font-size: 2.5rem;
   margin-bottom: 20px;
 }
 
-.hero-content p {
+.hero-section p {
   font-size: 1.2rem;
   margin-bottom: 30px;
 }
 
-.section-title {
-  text-align: center;
-  margin: 40px 0 20px;
-  color: #333;
-  font-size: 2rem;
-}
-
-.leagues-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+.intro-text {
+  font-size: 1.15rem;
+  color: #818181;
   margin-bottom: 40px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.league-card {
-  cursor: pointer;
-  transition: transform 0.3s;
-  text-align: center;
-  padding: 20px;
+.cards-section {
+  display: flex;
+  justify-content: center;
+  gap: 64px;
+  margin-bottom: 64px;
+  margin-top: 32px;
 }
 
-.league-card:hover {
+.card {
+  background-color: #f44336;
+  color: white;
+  border-radius: 8px;
+  padding: 30px 20px;
+  text-decoration: none;
+  width: 580px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
 }
 
-.league-emblem {
-  margin: 0 auto;
-  width: 100px;
+.card-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 15px;
 }
 
-.match-row {
-  cursor: pointer;
+.card h2 {
+  margin-bottom: 12px;
 }
 
-.match-row:hover {
-  background-color: #f5f5f5;
+.card p {
+  font-size: 1rem;
 }
-
 </style>

@@ -9,7 +9,8 @@
       <div class="footer-section">
         <h4>Навигация</h4>
         <router-link to="/home">Главная</router-link>
-        <router-link to="/leagues">Матчи</router-link>
+        <router-link to="/leagues">Лиги</router-link>
+        <router-link to="/teams/all">Команды</router-link>
       </div>
 
       <div class="footer-section">
@@ -20,7 +21,7 @@
     </div>
 
     <div class="footer-bottom">
-      <p>&copy; 2024 SportsStats. Все права защищены.</p>
+      <p>&copy; 2025 SportsStats. Все права защищены.</p>
     </div>
   </footer>
 </template>
@@ -53,25 +54,23 @@
   flex: 1;
   min-width: 250px;
   margin-bottom: 1.5rem;
-  padding: 0 1rem;
+  padding: 1rem;
 }
 
 .footer-section h4 {
   color: #f44336;
-  margin-bottom: 1rem;
+  margin-bottom: 2px;
   font-size: 1.2rem;
 }
 
 .footer-section p {
-  margin: 0.5rem 0;
-  line-height: 1.6;
+  margin: 2px;
   color: #bbb;
 }
 
 .footer-section a {
   display: block;
   color: #bbb;
-  margin-bottom: 0.5rem;
   text-decoration: none;
   transition: color 0.3s;
 }
@@ -82,11 +81,11 @@
 
 .footer-bottom {
   text-align: center;
-  padding: 1rem 0;
-  background: #111;
-  margin-top: 1rem;
-  color: #888;
-  font-size: 0.9rem;
+  padding: 6px;
+  background: #000000;
+  margin-top: 0;
+  color: #a0a0a0;
+  font-size: 0.8rem;
 }
 
 @media (max-width: 768px) {

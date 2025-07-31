@@ -90,7 +90,7 @@
         dateFrom: null,
         matches: [],
         isLoading: false,
-        leagueName: '', // Название лиги
+        leagueName: '',
         headers: [
           { title: 'Дата и время', key: 'utcDate', width: '180px' },
           { title: 'Статус', key: 'status', width: '120px' },
@@ -159,11 +159,11 @@
         const leagueId = this.$route.query.id
 
         Promise.all([
-          api.get(`/api/v4/competitions/${leagueId}`), // получить инфу о лиге
-          api.get(`/api/v4/competitions/${leagueId}/matches`), // получить матчи
+          api.get(`/api/v4/competitions/${leagueId}`),
+          api.get(`/api/v4/competitions/${leagueId}/matches`),
         ])
           .then(([leagueRes, matchesRes]) => {
-            this.leagueName = leagueRes.data.name // сохранить название
+            this.leagueName = leagueRes.data.name
             this.matches = matchesRes.data.matches
           })
           .catch(console.error)
