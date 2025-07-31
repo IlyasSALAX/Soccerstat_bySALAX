@@ -7,7 +7,7 @@
             class="logo-img"
             src="@/assets/logo.svg"
           >
-          FootballStat
+          SOCCERstat
         </router-link>
       </div>
 
