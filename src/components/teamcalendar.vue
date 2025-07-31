@@ -122,10 +122,10 @@
         teamName: '',
         teamId: this.$route.params.id,
         headers: [
-          { text: 'Дата и время', value: 'utcDate', width: '180px' },
-          { text: 'Статус', value: 'status', width: '120px' },
-          { text: 'Команды', value: 'teams', width: '300px' },
-          { text: 'Счёт', value: 'score', width: '80px' },
+          { title: 'Дата и время', value: 'utcDate', width: '180px' },
+          { title: 'Статус', value: 'status', width: '120px' },
+          { title: 'Команды', value: 'teams', width: '300px' },
+          { title: 'Счёт', value: 'score', width: '80px' },
         ],
       }
     },
